@@ -1,3 +1,42 @@
+// pick the words to replace
+const loopText = elementType => {
+  const elements = document.querySelectorAll(elementType);
+  for (let i = 0; i < elements.length; i += 1) {
+    if (
+      elements[i].innerHTML.indexOf("class=") === -1 &&
+	  elements[i].innerHTML.indexOf("id=") === -1 &&
+	  elements[i].innerHTML.indexOf("src=") === -1
+    ) {
+      elements[i].innerHTML = elements[i].innerHTML.replace(/person/gi, "pokemon trainer");
+      elements[i].innerHTML = elements[i].innerHTML.replace(/people/gi, "pokemon trainers");
+      elements[i].innerHTML = elements[i].innerHTML.replace(/catch/gi, "catch 'em all!");
+      elements[i].innerHTML = elements[i].innerHTML.replace(/cat/gi, "Eevee");
+      elements[i].innerHTML = elements[i].innerHTML.replace(/dog/gi, "Growlithe");
+	  elements[i].innerHTML = elements[i].innerHTML.replace(/bird/gi, "Spearow");
+    elements[i].innerHTML = elements[i].innerHTML.replace(/horse/gi, "Horsea");
+	  elements[i].innerHTML = elements[i].innerHTML.replace(/snake/gi, "Ekans");
+	  elements[i].innerHTML = elements[i].innerHTML.replace(/frog/gi, "Poliwag");
+	  elements[i].innerHTML = elements[i].innerHTML.replace(/mouse/gi, "Pikachu");
+	  elements[i].innerHTML = elements[i].innerHTML.replace(/fish/gi, "Magikarp");
+	  elements[i].innerHTML = elements[i].innerHTML.replace(/animal/gi, "Pokemon");
+    }
+  }
+};
+// replace the words
+loopText("p");
+loopText("a");
+loopText("h1");
+loopText("h2");
+loopText("h3");
+loopText("h4");
+loopText("h5");
+loopText("h6");
+loopText("span"); 
+loopText("section");
+loopText("div");
+
+
+
 const pokemonStore = {
   //jolteon
   0: '<img class="wild-pokemon" src="https://i.pinimg.com/originals/16/17/e6/1617e654042c91da3a2f9145ffd36e97.gif">',
