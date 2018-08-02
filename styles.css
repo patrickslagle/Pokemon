@@ -1,0 +1,10 @@
+img {
+  width: 150px;
+  height: 150px; 
+  position: fixed; 
+}
+
+button {
+  position: fixed;
+  top: 250px; 
+}
