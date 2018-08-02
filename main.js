@@ -10,20 +10,25 @@ const loopText = elementType => {
       elements[i].innerHTML = elements[i].innerHTML.replace(/person/gi, "pokemon trainer");
       elements[i].innerHTML = elements[i].innerHTML.replace(/people/gi, "pokemon trainers");
       elements[i].innerHTML = elements[i].innerHTML.replace(/catch/gi, "catch 'em all!");
+      elements[i].innerHTML = elements[i].innerHTML.replace(/pet/gi, "Pokemon");
+	    elements[i].innerHTML = elements[i].innerHTML.replace(/reptile/gi, "poison type Pokemon");
+	    elements[i].innerHTML = elements[i].innerHTML.replace(/mammal/gi, "normal type Pokemon");
+      elements[i].innerHTML = elements[i].innerHTML.replace(/plant/gi, "grass type Pokemon");
+      elements[i].innerHTML = elements[i].innerHTML.replace(/Veterinary/gi, "Poke Center");
       elements[i].innerHTML = elements[i].innerHTML.replace(/cat/gi, "Eevee");
       elements[i].innerHTML = elements[i].innerHTML.replace(/dog/gi, "Growlithe");
-	  elements[i].innerHTML = elements[i].innerHTML.replace(/bird/gi, "Spearow");
-    elements[i].innerHTML = elements[i].innerHTML.replace(/horse/gi, "Horsea");
-	  elements[i].innerHTML = elements[i].innerHTML.replace(/snake/gi, "Ekans");
-	  elements[i].innerHTML = elements[i].innerHTML.replace(/frog/gi, "Poliwag");
-	  elements[i].innerHTML = elements[i].innerHTML.replace(/mouse/gi, "Pikachu");
-	  elements[i].innerHTML = elements[i].innerHTML.replace(/fish/gi, "Magikarp");
-    elements[i].innerHTML = elements[i].innerHTML.replace(/USA/gi, "Kanto");
-	  elements[i].innerHTML = elements[i].innerHTML.replace(/america/gi, "Kanto");
-	  elements[i].innerHTML = elements[i].innerHTML.replace(/china/gi, "Johto");
-	  elements[i].innerHTML = elements[i].innerHTML.replace(/california/gi, "New Bark Town");
-	  elements[i].innerHTML = elements[i].innerHTML.replace(/Mexico/gi, "Hoenn");
-    
+	    elements[i].innerHTML = elements[i].innerHTML.replace(/bird/gi, "Spearow");
+      elements[i].innerHTML = elements[i].innerHTML.replace(/horse/gi, "Horsea");
+	    elements[i].innerHTML = elements[i].innerHTML.replace(/snake/gi, "Ekans");
+	    elements[i].innerHTML = elements[i].innerHTML.replace(/frog/gi, "Poliwag");
+	    elements[i].innerHTML = elements[i].innerHTML.replace(/mouse/gi, "Pikachu");
+	    elements[i].innerHTML = elements[i].innerHTML.replace(/fish/gi, "Magikarp");
+      elements[i].innerHTML = elements[i].innerHTML.replace(/USA/gi, "Kanto");
+	    elements[i].innerHTML = elements[i].innerHTML.replace(/america/gi, "Kanto");
+	    elements[i].innerHTML = elements[i].innerHTML.replace(/china/gi, "Johto");
+	    elements[i].innerHTML = elements[i].innerHTML.replace(/california/gi, "New Bark Town");
+      elements[i].innerHTML = elements[i].innerHTML.replace(/Mexico/gi, "Hoenn");
+      
     }
   }
 };
@@ -88,29 +93,13 @@ class WildPokemon {
       const position = this.html.position();
       const pokeballHTML = $('<img class="pokeball" src="http://pokemongoinfo.bitballoon.com/pokeball.gif">')
       
-      //removes the pokemon, adds in the moving pokeball in the current Pokemon location
+      //removes the pokemon, adds in the moving pokeball in the current Pokemon location.
+      //pokemon is being "caught". It is not caught or escaped yet. 
       $(`#${this.id}`).remove();
       $('body').append(pokeballHTML);
       $(pokeballHTML).offset(position)
 
-      const caught = () => {
-        console.log(position); 
-        $('.pokeball').first().remove();
-        const pokemonCaught = $('<img class="pokeballCaught" src="https://static1.squarespace.com/static/568a844d7086d7b18194bc08/t/57a0e952ff7c5034bcc2cad2/1470163296172/">')
-        $('body').append(pokemonCaught);
-        $(pokemonCaught).offset(position)        
-        setTimeout(() => $('.pokeballCaught').first().remove(), 3000);          
-      }
-      const escape = () => {
-        console.log(position); 
-
-        $('.pokeball').first().remove();
-        const pokemonEscape = $('<img class="pokeballEscape" src="https://media.giphy.com/media/zbLHPKicbPEWY/giphy.gif">')
-        $('body').append(pokemonEscape)
-        $(pokemonEscape).offset(position)
-        setTimeout(() => $('.pokeballEscape').first().remove(), 800);    
-      }
-
+      //determines if pokemon will be caught or escapes, then triggers in 3 seconds
       const caughtChance = Math.random()
       if (caughtChance > 0.50) {
           setTimeout(() => caught(), 3000); 
@@ -118,9 +107,32 @@ class WildPokemon {
       else {
           setTimeout(() => escape(), 3000); 
       }
-    })    
+
+      //removes pokeball catching img, inputs caught image, and the removes caught image
+      const caught = () => {
+        $('.pokeball').first().remove();
+        const pokemonCaught = $('<img class="pokeball caught" src="https://static1.squarespace.com/static/568a844d7086d7b18194bc08/t/57a0e952ff7c5034bcc2cad2/1470163296172/">')
+        $('body').append(pokemonCaught);
+        $(pokemonCaught).offset(position)        
+        setTimeout(() => $('.pokeballCaught').first().remove(), 3000);          
+      }
+
+      //removes pokeball catching img, inputs escape image, and the removes escape image      
+      const escape = () => {
+        $('.pokeball').first().remove();
+        const pokemonEscape = $('<img class="pokeball escape" src="https://media.giphy.com/media/zbLHPKicbPEWY/giphy.gif">')
+        $('body').append(pokemonEscape) 
+        $(pokemonEscape).offset(position)
+        setTimeout(() => $('.pokeballEscape').first().remove(), 800);    
+      }
+    })
+    
+    //end of constructor, starts the movement of Pokemon
     this.move()
   }
+
+//-------------------------------Prototype Methods-------------------------------//
+
   randomLeftPosition(){
     return Math.floor(Math.random() * (window.innerWidth-150))
   }
@@ -137,11 +149,31 @@ class WildPokemon {
      this.html.animate({top: randomTopPosition, left: randomLeftPosition}, randomMoveTime) 
      setTimeout(this.move.bind(this), randomMoveTime)
   }
-  
-  
 }
 
-
+class caughtPokemon {
+  constructor(pokemonID) {
+    //When a pokemon was caught, we knew its type, AKA it's number in the store. Pokemon ID is this number
+    this.html = $(`${pokemonStore[pokemonID]}`);
+    this.level = 1;
+    this.experence = {currentXP: 0, levelUpXP: 100}
+    this.hp = 20 + Math.floor(Math.random()*10)
+    this.attack = 10 + Math.floor(Math.random()*5)
+  }
+  gainExperience(){
+    this.experience[currentXP] += 20 + Math.floor(Math.random()*50);
+    if (this.experience[currentXP] > this.experience[levelUpXP]){
+      this.experience[currentXP] = this.experience[levelUpXP] - this.expereince[currentXP]
+      this.levelUp() 
+    }
+  }
+  levelUp(){
+    this.experience[levelUpXP] *= 1.2
+    this.level += 1; 
+    this.hp += 10 Math.floor(Math.random()*5)
+    this.attack += 4 Math.floor(Math.random()*3)
+  }
+}
 
 $('button').click( () => {
   const newPokemon = new WildPokemon();
@@ -150,11 +182,3 @@ $('button').click( () => {
 $('.wild-pokemon').click( () => {
   const newPokemon = new WildPokemon();
 })
-
-
-//                   ANIMATE CODE
-//     $('.kiss-him').on("click", () => {
-//   $('.heart').fadeIn(200); 
-
-//   $('.heart').fadeOut();
-// })
