@@ -18,7 +18,12 @@ const loopText = elementType => {
 	  elements[i].innerHTML = elements[i].innerHTML.replace(/frog/gi, "Poliwag");
 	  elements[i].innerHTML = elements[i].innerHTML.replace(/mouse/gi, "Pikachu");
 	  elements[i].innerHTML = elements[i].innerHTML.replace(/fish/gi, "Magikarp");
-	  elements[i].innerHTML = elements[i].innerHTML.replace(/animal/gi, "Pokemon");
+    elements[i].innerHTML = elements[i].innerHTML.replace(/USA/gi, "Kanto");
+	  elements[i].innerHTML = elements[i].innerHTML.replace(/america/gi, "Kanto");
+	  elements[i].innerHTML = elements[i].innerHTML.replace(/china/gi, "Johto");
+	  elements[i].innerHTML = elements[i].innerHTML.replace(/california/gi, "New Bark Town");
+	  elements[i].innerHTML = elements[i].innerHTML.replace(/Mexico/gi, "Hoenn");
+    
     }
   }
 };
@@ -59,9 +64,6 @@ const pokemonStore = {
   //bulbasaur
   9: '<img class="wild-pokemon" src="http://rs1265.pbsrc.com/albums/jj514/Narcotic-Dementia/All%20Pokemon%20Sprites%20Animated/001.gif~c200">',
 }
-const pokeballs = {
-  'catching': '<img class="pokeball" src="http://pokemongoinfo.bitballoon.com/pokeball.gif">'
-}
 const pokemonStoreCount = Object.keys(pokemonStore).length
 
 class WildPokemon {
@@ -84,11 +86,9 @@ class WildPokemon {
     $(`#${this.id}`).click( () => {
       //finds the pokemon's location
       const position = this.html.position();
-
-      //assigns the pokeballs HTML
       const pokeballHTML = $('<img class="pokeball" src="http://pokemongoinfo.bitballoon.com/pokeball.gif">')
       
-      //removes the pokemon, adds in the moving pokeball in the correct location
+      //removes the pokemon, adds in the moving pokeball in the current Pokemon location
       $(`#${this.id}`).remove();
       $('body').append(pokeballHTML);
       $(pokeballHTML).offset(position)
