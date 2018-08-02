@@ -7,8 +7,18 @@ const pokemonStore = {
   2: '<img class="wild-pokemon" src="http://gifimage.net/wp-content/uploads/2018/04/pokemon-sprites-gif-13.gif">',
   //eevee
   3: '<img class="wild-pokemon" src="http://rs248.pbsrc.com/albums/gg199/alex061095/Pokemon%20Sprites/eevee.gif~c200">',
+  //pikachu
+  4: '<img class="wild-pokemon"  src="https://i.gifer.com/1V94.gif">',
   //charmander
-  4: '<img class="wild-pokemon"  src="https://i.gifer.com/3bMU.gif">'
+  5: '<img class="wild-pokemon" src="http://rs77.pbsrc.com/albums/j61/Black_kitsune_Rioku/Pokemon%20Platinum%20Animated%20Sprites/CharmanderPlatinum.gif~c200">',
+  //squirtle
+  6: '<img class="wild-pokemon" src="http://rs77.pbsrc.com/albums/j61/Black_kitsune_Rioku/Pokemon%20Platinum%20Animated%20Sprites/Squirtle.gif~c200">',
+  //mewtwo
+  7: '<img class="wild-pokemon" src="https://78.media.tumblr.com/94dd642bae4af0f8f29b4187f8b00f9a/tumblr_mkv8xzNuYo1s3bc1no1_500.gif">',
+  //Snorlax
+  8: '<img class="wild-pokemon" src="https://78.media.tumblr.com/6eff72a4406552302fead4a9e13f5ee2/tumblr_oi5n67fG6L1vr3vrmo1_500.gif">',
+  //bulbasaur
+  9: '<img class="wild-pokemon" src="http://rs1265.pbsrc.com/albums/jj514/Narcotic-Dementia/All%20Pokemon%20Sprites%20Animated/001.gif~c200">',
 }
 const pokeballs = {
   'catching': '<img class="pokeball" src="http://pokemongoinfo.bitballoon.com/pokeball.gif">'
@@ -95,6 +105,10 @@ class WildPokemon {
 
 
 $('button').click( () => {
+  const newPokemon = new WildPokemon();
+})
+
+$('.wild-pokemon').click( () => {
   const newPokemon = new WildPokemon();
 })
 
