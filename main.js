@@ -10,6 +10,9 @@ const pokemonStore = {
   //charmander
   4: '<img class="wild-pokemon"  src="https://i.gifer.com/3bMU.gif">'
 }
+const pokeballs = {
+  'catching': '<img class="pokeball" src="http://pokemongoinfo.bitballoon.com/pokeball.gif">'
+}
 const pokemonStoreCount = Object.keys(pokemonStore).length
 
 class WildPokemon {
@@ -23,8 +26,51 @@ class WildPokemon {
     this.randomLeftPosition = this.randomLeftPosition();
     this.randomTopPosition = this.randomTopPosition(); 
     this.html.css({ top: this.randomTopPosition, left: this.randomLeftPosition });
-    console.log(this.move.bind(this))
-    this.move.bind(this)()
+    
+    //sets a random id to each pokemon so it can be deleted
+    this.id = Math.floor(Math.random() * 10000); 
+    this.html.attr("id", this.id)
+
+    //if you click on the specific pokemon, the following happens
+    $(`#${this.id}`).click( () => {
+      //finds the pokemon's location
+      const position = this.html.position();
+
+      //assigns the pokeballs HTML
+      const pokeballHTML = $('<img class="pokeball" src="http://pokemongoinfo.bitballoon.com/pokeball.gif">')
+      
+      //removes the pokemon, adds in the moving pokeball in the correct location
+      $(`#${this.id}`).remove();
+      $('body').append(pokeballHTML);
+      $(pokeballHTML).offset(position)
+
+      const caught = () => {
+        console.log(position); 
+        $('.pokeball').first().remove();
+        const pokemonCaught = $('<img class="pokeballCaught" src="https://static1.squarespace.com/static/568a844d7086d7b18194bc08/t/57a0e952ff7c5034bcc2cad2/1470163296172/">')
+        $('body').append(pokemonCaught);
+        $(pokemonCaught).offset(position)        
+        setTimeout(() => $('.pokeballCaught').first().remove(), 3000);          
+      }
+      const escape = () => {
+        console.log(position); 
+
+        $('.pokeball').first().remove();
+        const pokemonEscape = $('<img class="pokeballEscape" src="https://media.giphy.com/media/zbLHPKicbPEWY/giphy.gif">')
+        $('body').append(pokemonEscape)
+        $(pokemonEscape).offset(position)
+        setTimeout(() => $('.pokeballEscape').first().remove(), 800);    
+      }
+
+      const caughtChance = Math.random()
+      if (caughtChance > 0.50) {
+          setTimeout(() => caught(), 3000); 
+      }
+      else {
+          setTimeout(() => escape(), 3000); 
+      }
+    })    
+    this.move()
   }
   randomLeftPosition(){
     return Math.floor(Math.random() * (window.innerWidth-150))
@@ -43,17 +89,15 @@ class WildPokemon {
      setTimeout(this.move.bind(this), randomMoveTime)
   }
   
+  
 }
 
 
+
 $('button').click( () => {
-    const newPokemon = new WildPokemon();
-  // this.pokemonRandomNumber = Math.floor(Math.random()*pokemonStoreCount);
-  //   this.html = pokemonStore[pokemonRandomNumber];
-  //   $('body').append(this.html);
-  
-  
+  const newPokemon = new WildPokemon();
 })
+
 
 //                   ANIMATE CODE
 //     $('.kiss-him').on("click", () => {
