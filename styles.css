@@ -1,9 +1,60 @@
 
-button {
-  position: fixed;
-  top: 250px; 
+/* Popup HMTL code */
+.popup-container{
+  display:flex;
+  align-items: stretch;
+  background-color: snow;
+  border: grey solid 2px;
+  border-radius: 10px; 
+  width: 500px;
+  height: 500px; 
+  justify-content: center;
+  flex-direction: column; 
+  overflow: scroll; 
 }
 
+.popup-button-container{
+  display: flex; 
+  align-items: stretch;
+  justify-content: center; 
+}
+
+.popup-button{
+  /* display: flex;  */
+  /* align-items: stretch; */
+  background-color: dodgerblue; 
+  border: 1px solid snow;
+  border-radius: 15px; 
+  height: 70px; 
+  font-size: 30px; 
+  font-weight: 700; 
+  color: snow; 
+  margin: 10px; 
+}
+
+.pokemon-inventory-container{
+  display: flex; 
+  align-items: stretch; 
+}
+
+.pokemon-container{
+  display: flex;
+  width: 50%;
+}
+
+.pokemon-in-inventory{
+  display: flex; 
+  width: 100%;
+}
+
+.pokemon-stats{
+  /* display: flex; */
+  width: 50%;
+}
+
+
+
+/* ----------------inject CSS code -----------------*/
 .wild-pokemon-buttons {
   position: fixed; 
   background-color: dodgerblue;
@@ -14,9 +65,7 @@ button {
   font-size: 20px; 
   font-weight: 700; 
   color: snow; 
-  
 }
-
 
 .wild-pokemon{
   cursor: url('https://image.flaticon.com/icons/png/128/361/361998.png') 30 30, auto;
@@ -41,8 +90,4 @@ button {
   width: 150px;
   height: 150px; 
   position: fixed;
-}
-
-#test{
-  background-color: blue; 
 }

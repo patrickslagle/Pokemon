@@ -150,7 +150,10 @@ class WildPokemon {
   }
   fightPokemon(){
     //this.fightHTML = $("<iframe width='100' height='100' src=`https://www.youtube.com/embed/ti05bnOtKBM?start=1100&autoplay=1`></iframe>")
-    this.fightHTML = $("<iframe width='100%' height='100%' src='https://www.youtube.com/embed/ti05bnOtKBM?start=1120&autoplay=1'></iframe>")
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    
+    this.fightHTML = $(`<iframe width=${width} height=${height} src='https://www.youtube.com/embed/ti05bnOtKBM?start=1120&autoplay=1'></iframe>`)
     $('body').prepend(this.fightHTML)
   }
   catchPokemon(){
