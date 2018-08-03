@@ -77,11 +77,11 @@ class WildPokemon {
     this.pokemonRandomNumber = Math.floor(Math.random()*pokemonStoreCount);
     //accesses the pokemon store to obtain the HTML for a random pokemon
     this.html = $(`${pokemonStore[this.pokemonRandomNumber]}`);
-    // this.currentDirection = Math.floor(Math.random()*360);
     $('body').append(this.html);
     this.randomLeftPosition = this.randomLeftPosition();
     this.randomTopPosition = this.randomTopPosition(); 
     this.html.css({ top: this.randomTopPosition, left: this.randomLeftPosition });
+    this.canMove = true; 
     
     //sets a random id to each pokemon so it can be deleted
     this.id = Math.floor(Math.random() * 10000); 
@@ -89,42 +89,31 @@ class WildPokemon {
 
     //if you click on the specific pokemon, the following happens
     $(`#${this.id}`).click( () => {
-      //finds the pokemon's location
-      const position = this.html.position();
-      const pokeballHTML = $('<img class="pokeball" src="http://pokemongoinfo.bitballoon.com/pokeball.gif">')
-      
-      //removes the pokemon, adds in the moving pokeball in the current Pokemon location.
-      //pokemon is being "caught". It is not caught or escaped yet. 
-      $(`#${this.id}`).remove();
-      $('body').append(pokeballHTML);
-      $(pokeballHTML).offset(position)
+      //finds the pokemon's location. 
+      const position = this.html.position(); 
+      this.catchButton = $('<button class="wild-pokemon-buttons">Catch</button>')
+      this.fightButton = $('<button class="wild-pokemon-buttons">Fight</button>')
+      $('body').append(this.catchButton)
+      $('body').append(this.fightButton)
+      this.catchButton.css({top: position.top - 50, left: position.left - 30})
+      this.fightButton.css({top: position.top - 50, left: position.left + 100})
 
-      //determines if pokemon will be caught or escapes, then triggers in 3 seconds
-      const caughtChance = Math.random()
-      if (caughtChance > 0.50) {
-          setTimeout(() => caught(), 3000); 
-      }
-      else {
-          setTimeout(() => escape(), 3000); 
-      }
+      //stops pokemon movement, pops up engagement buttons. 
+      this.engagePokemon(this.pokemonRandomNumber); 
 
-      //removes pokeball catching img, inputs caught image, and the removes caught image
-      const caught = () => {
-        $('.pokeball').first().remove();
-        const pokemonCaught = $('<img class="pokeball caught" src="https://static1.squarespace.com/static/568a844d7086d7b18194bc08/t/57a0e952ff7c5034bcc2cad2/1470163296172/">')
-        $('body').append(pokemonCaught);
-        $(pokemonCaught).offset(position)        
-        setTimeout(() => $('.pokeballCaught').first().remove(), 3000);          
-      }
+      //catch button click, start catchPokemon function
+      $(this.catchButton).click( () => {
+        this.catchPokemon();
+        $(this.catchButton).first().remove();
+        $(this.fightButton).first().remove();
+      })
 
-      //removes pokeball catching img, inputs escape image, and the removes escape image      
-      const escape = () => {
-        $('.pokeball').first().remove();
-        const pokemonEscape = $('<img class="pokeball escape" src="https://media.giphy.com/media/zbLHPKicbPEWY/giphy.gif">')
-        $('body').append(pokemonEscape) 
-        $(pokemonEscape).offset(position)
-        setTimeout(() => $('.pokeballEscape').first().remove(), 800);    
-      }
+      //fight button clicked, start fightPokemon function
+      $(this.fightButton).click( () => {
+        this.fightPokemon();
+        $(this.catchButton).first().remove();
+        $(this.fightButton).first().remove();
+      })
     })
     
     //end of constructor, starts the movement of Pokemon
@@ -140,40 +129,70 @@ class WildPokemon {
     return Math.floor(Math.random() * (window.innerHeight-150)) 
   }
   move(){
-    //move in a random direction
-    //change direction every 2-5 seconds
+    //move in a random direction at a random time interval
      const position = this.html.position();  
      const randomMoveTime = Math.floor(Math.random() * 1000) + 1600;
      const randomLeftPosition =  Math.floor(Math.random() * (window.innerWidth-150))
      const randomTopPosition = Math.floor(Math.random() * (window.innerHeight-150)) 
-     this.html.animate({top: randomTopPosition, left: randomLeftPosition}, randomMoveTime) 
-     setTimeout(this.move.bind(this), randomMoveTime)
+     this.html.animate({top: randomTopPosition, left: randomLeftPosition}, randomMoveTime)
+  }
+  engagePokemon(pokemonNumber){
+    //finds the old HTML position, deletes the old HTML, recreates and positions it
+    //this is done to stop the move() function. 
+    const position = this.html.position();
+    this.engagedPokemonHTML = $(`${pokemonStore[pokemonNumber]}`)
+    $(`#${this.id}`).remove();
+    $('body').append(this.engagedPokemonHTML);
+    this.engagedPokemonHTML.offset(position);
+    //since we deleted and remade the HTML, we need to give back the ID. 
+    this.engagedPokemonHTML.attr("id", this.id)
+  }
+
+
+  catchPokemon(){
+    //finds the pokemon's location
+    const position = this.engagedPokemonHTML.position();
+    const pokeballHTML = $('<img class="pokeball" src="http://pokemongoinfo.bitballoon.com/pokeball.gif">')
+    
+    //removes the pokemon, adds in the moving pokeball in the current Pokemon location.
+    //pokemon is being "caught". It is not caught or escaped yet. 
+    $(`#${this.id}`).remove();
+    $('body').append(pokeballHTML);
+    $(pokeballHTML).offset(position)
+
+    //determines if pokemon will be caught or escapes, then triggers in 3 seconds
+    const caughtChance = Math.random()
+    if (caughtChance > 0.50) {
+        setTimeout(() => caught(), 3000); 
+    }
+    else {
+        setTimeout(() => escape(), 3000); 
+    }
+
+    //removes pokeball catching img, inputs caught image, and the removes caught image
+    const caught = () => {
+      $('.pokeball').first().remove();
+      const pokemonCaught = $('<img class="pokeball-caught" src="https://static1.squarespace.com/static/568a844d7086d7b18194bc08/t/57a0e952ff7c5034bcc2cad2/1470163296172/">')
+      $('body').append(pokemonCaught);
+      $(pokemonCaught).offset(position)        
+      setTimeout(() => $('.pokeball-caught').first().remove(), 3000);
+    }
+
+    //removes pokeball catching img, inputs escape image, and the removes escape image      
+    const escape = () => {
+      $('.pokeball').first().remove();
+      const pokemonEscape = $('<img class="pokeball-escape" src="https://media.giphy.com/media/zbLHPKicbPEWY/giphy.gif">')
+      $('body').append(pokemonEscape) 
+      $(pokemonEscape).offset(position)
+      setTimeout(() => $('.pokeball-escape').first().remove(), 800);    
+    }
+  }
+  sendCaughtMessageToPopup(){
+    //copy code here. 
   }
 }
 
-class caughtPokemon {
-  constructor(pokemonID) {
-    //When a pokemon was caught, we knew its type, AKA it's number in the store. Pokemon ID is this number
-    this.html = $(`${pokemonStore[pokemonID]}`);
-    this.level = 1;
-    this.experence = {currentXP: 0, levelUpXP: 100}
-    this.hp = 20 + Math.floor(Math.random()*10)
-    this.attack = 10 + Math.floor(Math.random()*5)
-  }
-  gainExperience(){
-    this.experience[currentXP] += 20 + Math.floor(Math.random()*50);
-    if (this.experience[currentXP] > this.experience[levelUpXP]){
-      this.experience[currentXP] = this.experience[levelUpXP] - this.expereince[currentXP]
-      this.levelUp() 
-    }
-  }
-  levelUp(){
-    this.experience[levelUpXP] *= 1.2
-    this.level += 1; 
-    this.hp += 10 Math.floor(Math.random()*5)
-    this.attack += 4 Math.floor(Math.random()*3)
-  }
-}
+
 
 $('button').click( () => {
   const newPokemon = new WildPokemon();
