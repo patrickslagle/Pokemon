@@ -135,6 +135,7 @@ class WildPokemon {
      const randomLeftPosition =  Math.floor(Math.random() * (window.innerWidth-150))
      const randomTopPosition = Math.floor(Math.random() * (window.innerHeight-150)) 
      this.html.animate({top: randomTopPosition, left: randomLeftPosition}, randomMoveTime)
+     setTimeout(() => this.move(), randomMoveTime)
   }
   engagePokemon(pokemonNumber){
     //finds the old HTML position, deletes the old HTML, recreates and positions it
@@ -147,8 +148,11 @@ class WildPokemon {
     //since we deleted and remade the HTML, we need to give back the ID. 
     this.engagedPokemonHTML.attr("id", this.id)
   }
-
-
+  fightPokemon(){
+    //this.fightHTML = $("<iframe width='100' height='100' src=`https://www.youtube.com/embed/ti05bnOtKBM?start=1100&autoplay=1`></iframe>")
+    this.fightHTML = $("<iframe width='100%' height='100%' src='https://www.youtube.com/embed/ti05bnOtKBM?start=1120&autoplay=1'></iframe>")
+    $('body').prepend(this.fightHTML)
+  }
   catchPokemon(){
     //finds the pokemon's location
     const position = this.engagedPokemonHTML.position();
